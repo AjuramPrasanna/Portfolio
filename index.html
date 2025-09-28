@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="An innovative, animated portfolio template with HTML, CSS & JavaScript." />
+  <title>All This Just to Impress You</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Decorative BG -->
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="bg-grad"></div>
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <!-- Header / Nav -->
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo"></div> <span>Ajuram</span></div>
+      <nav>
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <a class="btn" href="#" id="downloadResume">📄 Download Resume</a>
+        <button id="themeToggle" class="btn theme-toggle" aria-label="Toggle theme">🌓</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="home" class="container hero">
+    <div>
+      <span class="tag">🤖 Developer • Python • Cloud • With AI as my Sidekick</span>
+      <h1>Crafting delightful digital experiences that feel <em>alive</em>.</h1>
+      <p>Good with Python, cloud (AWS + Azure), and not afraid of machine learning, prompt engineering, or full-stack tools like HTML, CSS, JS, SQL, and C#. Basically: I code, I learn fast, and I make it work.</p>
+      <div class="cta">
+        <a class="btn" href="#projects">🚀 View Projects</a>
+        <a class="btn" href="#contact">💌 Hire Me</a>
+      </div>
+    </div>
+    <div class="hero-card tilt" data-tilt>
+      <img alt="Hero image" src="images\hero-card-fs-hs.png" />
+      <div class="shine" aria-hidden="true"></div>
+      <div class="hero-badges">
+        <span class="badge">⚡ Perf Oriented</span>
+        <span class="badge">🎨 Pixel Perfect</span>
+        <span class="badge">🧩 Modular</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Skill Marquee -->
+  <div class="marquee" aria-label="Technologies">
+    <div class="marquee-track">
+      <span class="chip">Python</span><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Machine Learning</span><span class="chip">Artificial Intelligence</span><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
+      <span class="chip">Python</span><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Machine Learning</span><span class="chip">Artificial Intelligence</span><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <section id="projects" class="container">
+    <div class="section-head">
+      <h2>Featured Projects</h2>
+    </div>
+    <div class="grid">
+      <!-- Project 1 -->
+      <article class="card tilt reveal">
+        <a class="card-img" href="#" aria-label="Project One">
+          <img alt="Project screenshot" src="https://picsum.photos/seed/proj1/1200/800" />
+        </a>
+        <div class="card-body">
+          <h3>Project One – SaaS Dashboard</h3>
+          <p>A clean analytics dashboard with charts, filters, and real‑time updates. Built with a11y in mind.</p>
+          <div class="meta">
+            <span class="chip">React</span>
+            <span class="chip">Node</span>
+            <span class="chip">Charting</span>
+          </div>
+        </div>
+      </article>
+      <!-- Project 2 -->
+      <article class="card tilt reveal">
+        <a class="card-img" href="#" aria-label="Project Two">
+          <img alt="Project screenshot" src="https://picsum.photos/seed/proj2/1200/800" />
+        </a>
+        <div class="card-body">
+          <h3>Project Two – 3D Product Site</h3>
+          <p>Immersive WebGL product explorer with smooth page transitions and subtle parallax depth.</p>
+          <div class="meta">
+            <span class="chip">Three.js</span>
+            <span class="chip">GSAP</span>
+            <span class="chip">Micro‑interactions</span>
+          </div>
+        </div>
+      </article>
+      <!-- Project 3 -->
+      <article class="card tilt reveal">
+        <a class="card-img" href="#" aria-label="Project Three">
+          <img alt="Project screenshot" src="https://picsum.photos/seed/proj3/1200/800" />
+        </a>
+        <div class="card-body">
+          <h3>Project Three – Mobile App</h3>
+          <p>Cross‑platform app with offline sync and delightful motion design. Optimized for performance.</p>
+          <div class="meta">
+            <span class="chip">Flutter</span>
+            <span class="chip">Offline‑first</span>
+            <span class="chip">Animations</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="container">
+    <div class="section-head">
+      <h2>About Me</h2>
+    </div>
+    <div class="about">
+      <div class="reveal">
+        <p>I could tell you I'm "passionate about technology" and "a quick learner", but you've probably read that line a hundred times today. Here's the real deal: I'm good with Python, I know my way around the cloud (AWS & Azure), and I've worked in machine learning enough to make computers look smarter than they really are.
+           I like making things, breaking things, and fixing things. I'll make your life easier...eventually.</p>
+        <div class="kpis">
+          <div class="kpi"><h3>3</h3><small>Major Projects Shipped</small></div>
+          <div class="kpi"><h3>25+</h3><small>Minor Personal Projects</small></div>
+          <div class="kpi"><h3>4x</h3><small>Hackathon Award Winner</small></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="gallery">
+          <!-- <img class="tall" src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop" alt="Workspace"/> -->
+           <img class="tall" src="images\ai-predictive-maintenance.jpg" alt="Workspace"/>
+          <img src="images/exam-invigilator.jpg" alt="Code"/>
+          <img src="images/object-recognition.jpg" alt="Sketching"/>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- Testimonials / Carousel -->
+  <section class="container">
+    <div class="section-head">
+      <h2>Kind Words</h2>
+      <p>Real quotes from imaginary clients 😉</p>
+    </div>
+    <div class="carousel reveal" id="carousel">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="testimonial">
+          <p>"That was quick! Works great by the way."</p>
+          <p>- Garrick B., Technical Lead</p>
+        </div>
+        <div class="testimonial">
+          <p>"Damn, that's a good solution. Why didn't I think of that?"</p>
+          <p>- J S., Technical Lead</p>
+        </div>
+        <div class="testimonial">
+          <p>"A partner you can trust for mission‑critical launches. Highly recommend."</p>
+          <p>- Marco D., CTO</p>
+        </div>
+      </div>
+    </div>
+    <div class="dots" id="dots" aria-label="carousel dots"></div>
+  </section>
+
+  <!-- Image Gallery -->
+  <section id="gallery" class="container">
+    <div class="section-head">
+      <h2>Visual Playground</h2>
+      <p>Some eye candy — replace with your shots</p>
+    </div>
+    <div class="grid">
+      <img class="reveal" src="https://picsum.photos/seed/g1/800/600" alt="Gallery 1"/>
+      <img class="reveal" src="https://picsum.photos/seed/g2/800/600" alt="Gallery 2"/>
+      <img class="reveal" src="https://picsum.photos/seed/g3/800/600" alt="Gallery 3"/>
+      <img class="reveal" src="https://picsum.photos/seed/g4/800/600" alt="Gallery 4"/>
+      <img class="reveal" src="https://picsum.photos/seed/g5/800/600" alt="Gallery 5"/>
+      <img class="reveal" src="https://picsum.photos/seed/g6/800/600" alt="Gallery 6"/>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="container">
+    <div class="section-head">
+      <h2>Contact</h2>
+      <p>This is the part where you hire me.</p>
+    </div>
+    <form class="reveal" id="contactForm" novalidate>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+        <input class="input" type="text" name="name" placeholder="Your name" required />
+        <input class="input" type="email" name="email" placeholder="Email address" required />
+      </div>
+      <input class="input" type="text" name="subject" placeholder="Subject" />
+      <textarea class="input" name="message" placeholder="Tell me about your project" required></textarea>
+      <div style="display:flex; gap:12px; align-items:center">
+        <button class="btn" type="submit">📬 Send Message</button>
+        <small id="formStatus" aria-live="polite"></small>
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <span>© <span id="year"></span> Ajuram. No rights reserved.</span>
+      <div style="display:flex; gap:8px">
+        <a class="btn" href="#home">↑ Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
