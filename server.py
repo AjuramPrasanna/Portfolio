@@ -20,7 +20,7 @@ API_KEY = os.environ["OPENROUTER_API_KEY"]
 AI_MODEL = os.environ.get("AI_MODEL", "google/gemma-4-26b-a4b-it")
 
 # ── Limits ─────────────────────────────────────────────────────────────────────
-MAX_MSG_LENGTH       = 500   # characters per user message
+MAX_MSG_LENGTH       = 200   # characters per user message
 MAX_HISTORY_TURNS    = 5     # max user/assistant pairs accepted
 MAX_REQUESTS_PER_MIN = 10    # per IP, rolling 60-second window
 
