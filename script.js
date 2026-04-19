@@ -290,13 +290,14 @@ function downloadResumeWithErrorHandling() {
   async function sendMessage() {
     const text = input.value.trim();
     if (!text || userMsgCount >= MAX_MESSAGES) return;
+    if (text.length > 200) return;
 
     input.value = '';
     sendBtn.disabled = true;
     input.disabled = true;
 
-    userMsgCount++;
     appendMessage('user', text);
+    userMsgCount++;
     history.push({ role: 'user', content: text });
 
     showTyping();
