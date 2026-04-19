@@ -87,7 +87,12 @@ nav a.active, nav a:hover{background:var(--card); opacity:1}
 /* ===== PROJECTS ===== */
 .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
 .card{position:relative; border-radius:20px; overflow:hidden; background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--card-strong); box-shadow:var(--shadow); transform-style:preserve-3d; transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease}
-.card-img{aspect-ratio:16/10; overflow:hidden}
+.card-img{aspect-ratio:16/10; overflow:hidden; position:relative}
+.card-img--agent{aspect-ratio:4/3}
+.card-img--agent img{object-fit:contain; padding:20px; background:linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.01))}
+.card-overlay{position:absolute; bottom:0; left:0; right:0; background:linear-gradient(0deg, rgba(10,8,25,.88) 55%, transparent); padding:16px; padding-top:40px; display:flex; flex-wrap:wrap; gap:6px; transform:translateY(100%); opacity:0; transition:transform .4s ease, opacity .4s ease}
+.card:hover .card-overlay{transform:translateY(0); opacity:1}
+.card-overlay .chip{background:rgba(124,92,255,.28); padding:6px 14px; border-color:rgba(124,92,255,.4)}
 .card-img img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease}
 .card:hover .card-img img{transform:scale(1.06)}
 .card-body{padding:16px}
@@ -95,21 +100,8 @@ nav a.active, nav a:hover{background:var(--card); opacity:1}
 .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
 .meta .chip{background:rgba(124,92,255,.14)}
 
-.agent-icons{
-  margin-top:22px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.agent-icons img{
-  width:100%;
-  height:320px;
-  object-fit:contain;
-  border-radius:16px;
-  border:1px solid var(--card-strong);
-  background:linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-  padding:12px;
-}
+.agent-card-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:22px}
+.agent-card-grid .card:last-child:nth-child(odd){grid-column:1/-1; max-width:calc(50% - 9px); margin-inline:auto}
 
 /* ===== ABOUT ===== */
 .about{display:grid; grid-template-columns:1fr; gap:28px; align-items:start}

@@ -44,20 +44,22 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 // ===== Carousel =====
 const track = document.getElementById('carouselTrack');
 const dotsWrap = document.getElementById('dots');
-const slides = [...track.children];
-let idx = 0; let timer;
-slides.forEach((_,i)=>{
-  const d = document.createElement('button'); d.className='dot' + (i===0?' active':''); d.setAttribute('aria-label', 'Go to slide '+(i+1)); d.addEventListener('click',()=>go(i)); dotsWrap.appendChild(d);
-})
-const dots = [...dotsWrap.children];
-function go(i){
-  idx = (i+slides.length)%slides.length;
-  track.style.transform = `translateX(-${idx*100}%)`;
-  dots.forEach((d,di)=>d.classList.toggle('active', di===idx));
+if (track && dotsWrap) {
+  const slides = [...track.children];
+  let idx = 0; let timer;
+  slides.forEach((_,i)=>{
+    const d = document.createElement('button'); d.className='dot' + (i===0?' active':''); d.setAttribute('aria-label', 'Go to slide '+(i+1)); d.addEventListener('click',()=>go(i)); dotsWrap.appendChild(d);
+  })
+  const dots = [...dotsWrap.children];
+  function go(i){
+    idx = (i+slides.length)%slides.length;
+    track.style.transform = `translateX(-${idx*100}%)`;
+    dots.forEach((d,di)=>d.classList.toggle('active', di===idx));
+    resetTimer();
+  }
+  function resetTimer(){ clearInterval(timer); timer = setInterval(()=>go(idx+1), 5000); }
   resetTimer();
 }
-function resetTimer(){ clearInterval(timer); timer = setInterval(()=>go(idx+1), 5000); }
-resetTimer();
 
 // ===== Form handler =====
 const form = document.getElementById('contactForm');
@@ -191,7 +193,7 @@ function downloadResumeWithErrorHandling() {
 
 // ===== AI CHAT WIDGET =====
 (function () {
-  const API_ENDPOINT = '/api/chat'; // backend proxy — keeps credentials server-side
+  const API_ENDPOINT = 'https://portfolio-07rr.onrender.com/api/chat';
   const MAX_MESSAGES = 5;
 
   const widget   = document.getElementById('chatWidget');

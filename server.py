@@ -8,6 +8,7 @@ from typing import Literal
 
 import uvicorn
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, field_validator
@@ -70,6 +71,13 @@ class ChatRequest(BaseModel):
 
 # ── App ────────────────────────────────────────────────────────────────────────
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
+)
 
 # ── In-memory rate limit store {ip: [timestamp, ...]} ─────────────────────────
 _rate_store: dict[str, list[float]] = defaultdict(list)
