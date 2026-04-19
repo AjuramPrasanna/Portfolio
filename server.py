@@ -170,6 +170,11 @@ async def validation_error_handler(req: Request, exc: RequestValidationError):
     msg = msg.removeprefix("Value error, ")
     return JSONResponse({"error": msg}, status_code=400)
 
+# ── Health check (keeps Render free tier alive) ──────────────────────────────
+@app.get("/health")
+async def health():
+    return JSONResponse({"ok": True})
+
 # ── Serve static portfolio files (must come after API routes) ──────────────────
 @app.get("/")
 async def index():

@@ -191,6 +191,14 @@ function downloadResumeWithErrorHandling() {
     });
 }
 
+// ===== KEEP-ALIVE PING (prevents Render cold starts) =====
+(function () {
+  const HEALTH_URL = 'https://portfolio-07rr.onrender.com/health';
+  function ping() { fetch(HEALTH_URL).catch(() => {}); }
+  ping();
+  setInterval(ping, 2 * 60 * 1000);
+})();
+
 // ===== AI CHAT WIDGET =====
 (function () {
   const API_ENDPOINT = 'https://portfolio-07rr.onrender.com/api/chat';
