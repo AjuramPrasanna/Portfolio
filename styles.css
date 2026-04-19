@@ -146,6 +146,19 @@ footer{padding:26px 0; border-top:1px solid var(--card)}
   display:flex; flex-direction:column; align-items:flex-end; gap:14px;
 }
 
+.chat-bubble{
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  color:#fff; font-size:13px; font-weight:500;
+  padding:10px 14px; border-radius:16px 16px 4px 16px;
+  box-shadow:0 6px 24px rgba(124,92,255,.4);
+  max-width:200px; text-align:center; line-height:1.4;
+  animation:bubblePop .4s cubic-bezier(.34,1.56,.64,1) both, bubbleFloat 3s ease-in-out 1s infinite;
+  transform-origin:bottom right;
+}
+.chat-bubble.hidden{opacity:0; pointer-events:none; transition:opacity .3s ease;}
+@keyframes bubblePop{from{opacity:0;transform:scale(.6) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes bubbleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
 #chatToggle{
   width:58px; height:58px; border-radius:50%;
   background:linear-gradient(135deg,var(--brand),var(--brand-2));

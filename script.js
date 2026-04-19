@@ -217,10 +217,15 @@ function downloadResumeWithErrorHandling() {
   let userMsgCount = 0;
 
   // ── Toggle open/close ──
+  const bubble   = document.getElementById('chatBubble');
+
   toggle.addEventListener('click', () => {
     const isOpen = widget.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(isOpen));
-    if (isOpen) setTimeout(() => input.focus(), 250);
+    if (isOpen) {
+      if (bubble) bubble.classList.add('hidden');
+      setTimeout(() => input.focus(), 250);
+    }
   });
 
   document.addEventListener('keydown', (e) => {
