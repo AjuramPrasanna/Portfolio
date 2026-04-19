@@ -59,35 +59,55 @@ function go(i){
 function resetTimer(){ clearInterval(timer); timer = setInterval(()=>go(idx+1), 5000); }
 resetTimer();
 
-// ===== Form handler (demo) =====
+// ===== Form handler =====
 const form = document.getElementById('contactForm');
 const status = document.getElementById('formStatus');
-form.addEventListener('submit', (e)=>{
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const data = Object.fromEntries(new FormData(form));
-  // Demo: pretend to send
   status.textContent = 'Sending…';
-  setTimeout(()=>{
-    status.textContent = `Thanks, ${data.name || 'friend'}! I will reply to ${data.email || 'your email'} soon.`;
-    form.reset();
-  }, 900);
+
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData);
+
+  // Use subject field as email subject if provided
+  if (!data.subject) {
+    formData.set('subject', `Portfolio contact from ${data.name || 'someone'}`);
+  }
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(formData))
+    });
+    const json = await res.json();
+    if (res.ok && json.success) {
+      status.textContent = `Thanks, ${data.name || 'friend'}! I'll be in touch soon.`;
+      form.reset();
+    } else {
+      status.textContent = json.message || 'Something went wrong. Please try again.';
+    }
+  } catch {
+    status.textContent = 'Network error. Please try again.';
+  }
 });
 
 // ===== Smooth scroll for navigation links =====
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const headerHeight = document.querySelector('header').offsetHeight;
+  const top = el.getBoundingClientRect().top + window.scrollY - headerHeight;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Navigation links smooth scroll
   const navLinks = document.querySelectorAll('header nav a[href^="#"]');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const targetId = link.getAttribute('href').substring(1);
-      const targetElement = document.getElementById(targetId);
-      
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
+      scrollToSection(link.getAttribute('href').substring(1));
     });
   });
 
@@ -96,14 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ctaButtons.forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
-      const targetId = button.getAttribute('href').substring(1);
-      const targetElement = document.getElementById(targetId);
-      
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
+      scrollToSection(button.getAttribute('href').substring(1));
     });
   });
 
@@ -175,3 +188,145 @@ function downloadResumeWithErrorHandling() {
       alert('Unable to download resume at the moment. Please try again later.');
     });
 }
+
+// ===== AI CHAT WIDGET =====
+(function () {
+  const API_ENDPOINT = '/api/chat'; // backend proxy — keeps credentials server-side
+  const MAX_MESSAGES = 5;
+
+  const widget   = document.getElementById('chatWidget');
+  const toggle   = document.getElementById('chatToggle');
+  const messages = document.getElementById('chatMessages');
+  const input    = document.getElementById('chatInput');
+  const sendBtn  = document.getElementById('chatSend');
+  const limitBar = document.getElementById('chatLimitBar');
+  const resetBtn = document.getElementById('chatReset');
+
+  // history only stores user/assistant turns; system prompt lives on the server
+  let history = [];
+  let userMsgCount = 0;
+
+  // ── Toggle open/close ──
+  toggle.addEventListener('click', () => {
+    const isOpen = widget.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) setTimeout(() => input.focus(), 250);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && widget.classList.contains('open')) {
+      widget.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ── Helpers ──
+  function appendMessage(role, text) {
+    const div = document.createElement('div');
+    div.className = `chat-msg ${role}`;
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'chat-typing';
+    div.id = 'chatTyping';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('chatTyping');
+    if (t) t.remove();
+  }
+
+  function lockInput() {
+    input.disabled = true;
+    sendBtn.disabled = true;
+    input.placeholder = 'Limit reached — reset to continue.';
+    limitBar.hidden = false;
+  }
+
+  function resetSession() {
+    history = [];
+    userMsgCount = 0;
+    messages.innerHTML = '';
+    appendMessage('assistant', "Session reset! Ask me anything about Ajuram. \uD83D\uDC4B");
+    input.disabled = false;
+    sendBtn.disabled = false;
+    input.placeholder = 'Ask me anything\u2026';
+    limitBar.hidden = true;
+    input.focus();
+  }
+
+  // ── Send message ──
+  function _friendlyError(status) {
+    if (status === 429) return "You're going a bit fast! Please wait a moment before trying again.";
+    if (status === 502 || status === 503) return "The AI service is temporarily unavailable. Please try again shortly.";
+    if (status === 0 || !status) return "Couldn't reach the server. Please check your connection and try again.";
+    return "Something went wrong. Please try again in a moment.";
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || userMsgCount >= MAX_MESSAGES) return;
+
+    input.value = '';
+    sendBtn.disabled = true;
+    input.disabled = true;
+
+    userMsgCount++;
+    appendMessage('user', text);
+    history.push({ role: 'user', content: text });
+
+    showTyping();
+
+    try {
+      // Send full conversation history; server prepends the system prompt
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history })
+      });
+
+      removeTyping();
+
+      if (!res.ok) {
+        const { error } = await res.json().catch(() => ({}));
+        const friendly = error || _friendlyError(res.status);
+        throw new Error(friendly);
+      }
+
+      const data = await res.json();
+      const reply = data.reply || "I couldn't generate a response. Please try again!";
+      history.push({ role: 'assistant', content: reply });
+      appendMessage('assistant', reply);
+    } catch (err) {
+      removeTyping();
+      // Don't count a failed request against the limit
+      userMsgCount--;
+      history.pop();
+      const msg = err.message || _friendlyError(0);
+      appendMessage('assistant', msg);
+    } finally {
+      if (userMsgCount >= MAX_MESSAGES) {
+        lockInput();
+      } else {
+        sendBtn.disabled = false;
+        input.disabled = false;
+        input.focus();
+      }
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  resetBtn.addEventListener('click', resetSession);
+})();
