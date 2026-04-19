@@ -53,8 +53,6 @@ class Message(BaseModel):
     def validate_content(cls, v: str) -> str:
         if not v.strip():
             raise ValueError("Please type something before sending.")
-        if len(v) > MAX_MSG_LENGTH:
-            raise ValueError(f"Your message is too long — please keep it under {MAX_MSG_LENGTH} characters.")
         return v
 
 class ChatRequest(BaseModel):
@@ -67,6 +65,9 @@ class ChatRequest(BaseModel):
             raise ValueError("Something went wrong sending your message. Please refresh the page and try again.")
         if len(v) > MAX_HISTORY_TURNS * 2:
             raise ValueError("You've reached the 5-message limit. Please reset the session to keep chatting.")
+        for msg in v:
+            if msg.role == "user" and len(msg.content) > MAX_MSG_LENGTH:
+                raise ValueError(f"Your message is too long — please keep it under {MAX_MSG_LENGTH} characters.")
         return v
 
 # ── App ────────────────────────────────────────────────────────────────────────
