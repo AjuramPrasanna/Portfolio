@@ -290,7 +290,10 @@ function downloadResumeWithErrorHandling() {
   async function sendMessage() {
     const text = input.value.trim();
     if (!text || userMsgCount >= MAX_MESSAGES) return;
-    if (text.length > 200) return;
+    if (text.length > 200) {
+      appendMessage('assistant', 'Your message is too long — please keep it under 200 characters.');
+      return;
+    }
 
     input.value = '';
     sendBtn.disabled = true;

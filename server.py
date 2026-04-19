@@ -102,6 +102,14 @@ async def chat(body: ChatRequest, req: Request):
             status_code=429,
         )
 
+    # Enforce per-message length limit on all user messages
+    for msg in body.messages:
+        if msg.role == "user" and len(msg.content) > MAX_MSG_LENGTH:
+            return JSONResponse(
+                {"error": f"Your message is too long — please keep it under {MAX_MSG_LENGTH} characters."},
+                status_code=400,
+            )
+
     payload = json.dumps({
         "model": AI_MODEL,
         "messages": [
