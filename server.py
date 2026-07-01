@@ -16,8 +16,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.environ["OPENROUTER_API_KEY"]
-AI_MODEL = os.environ.get("AI_MODEL", "google/gemma-4-26b-a4b-it")
+AZURE_OPENAI_API_KEY = os.environ["AZURE_OPENAI_API_KEY"]
+AZURE_OPENAI_ENDPOINT = os.environ["AZURE_OPENAI_ENDPOINT"]
+AI_MODEL = os.environ.get("AI_MODEL", "gpt-4.1")
 
 # ── Limits ─────────────────────────────────────────────────────────────────────
 MAX_MSG_LENGTH       = 200   # characters per user message
@@ -120,12 +121,13 @@ async def chat(body: ChatRequest, req: Request):
         "temperature": 0.7,
     }).encode("utf-8")
 
+    azure_url = f"{AZURE_OPENAI_ENDPOINT.rstrip('/')}/openai/deployments/{AI_MODEL}/chat/completions?api-version=2023-10-01"
     or_req = urllib.request.Request(
-        "https://openrouter.ai/api/v1/chat/completions",
+        azure_url,
         data=payload,
         headers={
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {API_KEY}",
+            "api-key": AZURE_OPENAI_API_KEY,
             "HTTP-Referer": str(req.url),
             "X-Title": "Ajuram's Portfolio",
         },
